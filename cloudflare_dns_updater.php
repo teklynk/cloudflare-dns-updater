@@ -102,7 +102,7 @@ if ($cf_update == true){
  	//Send email notification
  	if ($email_send == true){
 		if (mail($email_to, $email_subject, $email_body, $email_headers)) {
-			print_r("Email notification sent to " . $to_email);
+			print_r("Email notification sent to " . $email_to);
 		} else {
 			print_r("Email notification error.");
 		}
