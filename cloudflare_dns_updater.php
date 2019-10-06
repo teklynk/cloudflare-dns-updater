@@ -9,6 +9,13 @@ $ip_file_content = trim($ip_file_content);
 $cf_account_name = "<cloudflare acount username>";
 $cf_api_key = "<cloudflare acount global api-key>";
 
+//Email settings for sending email notification when IP has been updated
+$email_to = "recipient@example.com";
+$email_subject = "Your IP has been updated";
+$email_headers = "From: sender@example.com";
+$email_body = "IP has been updated to: " . $cf_content;
+$email_send = true;
+
 if (!$cf_content){
     print_r("Failed to get ip from remote server. | " . date("Y-m-d h:i:s") . PHP_EOL);
     exit();
@@ -91,6 +98,15 @@ if ($cf_update == true){
         //     --data '{"type":"A","name":"<domain_name>","content":"<new_ip_address>","proxiable":true,"proxied":true,"ttl":1}'
 
     }
+ 
+ 	//Send email notification
+ 	if ($email_send == true){
+		if (mail($email_to, $email_subject, $email_body, $email_headers)) {
+			print_r("Email notification sent to " . $to_email);
+		} else {
+			print_r("Email notification error.");
+		}
+ 	}
 
     print_r("Updated IP to: " . $cf_content . " | " . date("Y-m-d h:i:s") . PHP_EOL);
     exit();
