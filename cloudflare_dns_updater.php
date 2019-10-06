@@ -27,18 +27,18 @@ if ($cf_content !== $ip_file_content){
 
 //Zone ID's
 $cf_zone_array = array(
-    "dns_zone_id_1", //domain1.com
-    "dns_zone_id_2", //domain2.com
-    "dns_zone_id_3", //domain3.com
-    "dns_zone_id_4", //domain4.com
+    "<dns_zone_id_1>", //domain1.com
+    "<dns_zone_id_2>", //domain2.com
+    "<dns_zone_id_3>", //domain3.com
+    "<dns_zone_id_4>", //domain4.com
 );
 
 //DNS Record ID's
 $cf_dns_array = array(
-    "dns_record_id_1" => "domain1.com",
-    "dns_record_id_2" => "domain2.com",
-    "dns_record_id_3" => "domain3.com",
-    "dns_record_id_4" => "domain4.com"
+    "<dns_record_id_1>" => "domain1.com",
+    "<dns_record_id_2>" => "domain2.com",
+    "<dns_record_id_3>" => "domain3.com",
+    "<dns_record_id_4>" => "domain4.com"
 );
 
 if ($cf_update == true){
