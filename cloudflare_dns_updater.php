@@ -18,6 +18,7 @@ $email_send = true;
 
 if (!$cf_content){
     print_r("Failed to get ip from remote server. | " . date("Y-m-d h:i:s") . PHP_EOL);
+
     exit();
 }
 
@@ -81,14 +82,14 @@ if ($cf_update == true){
         $response = curl_exec($ch);
 
         if (!$response || curl_errno($ch)) {
-            var_dump(curl_error($ch));
+            print_r( curl_error($ch) . " | " . date("Y-m-d h:i:s") . PHP_EOL);
         }
 
         curl_close($ch);
 
-        print_r($response . PHP_EOL);
+        print_r("IP updated to " . $cf_content . " for domain " . $dns_name . " | " . date("Y-m-d h:i:s") . PHP_EOL);
 
-        print_r($dns_name . PHP_EOL);
+        print_r($response . " | " . date("Y-m-d h:i:s") . PHP_EOL);
 
         //Example of the Curl Command -  You can run this in a terminal for testing:
         //curl -X PUT "https://api.cloudflare.com/client/v4/zones/<cloudflare_zone_id>/dns_records/<cloudflare_dns_id>" \
@@ -102,18 +103,19 @@ if ($cf_update == true){
  	//Send email notification
  	if ($email_send == true){
 		if (mail($email_to, $email_subject, $email_body, $email_headers)) {
-			print_r("Email notification sent to " . $email_to);
+			print_r("Email notification sent to " . $email_to  . " | " . date("Y-m-d h:i:s") . PHP_EOL);
 		} else {
-			print_r("Email notification error.");
+			print_r("Email notification error."  . " | " . date("Y-m-d h:i:s") . PHP_EOL);
 		}
  	}
 
-    print_r("Updated IP to: " . $cf_content . " | " . date("Y-m-d h:i:s") . PHP_EOL);
     exit();
 
 } else {
 
     print_r("No update needed. | ". date("Y-m-d h:i:s") . PHP_EOL);
+
     exit();
+
 }
 ?>
