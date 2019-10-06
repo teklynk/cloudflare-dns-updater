@@ -1,31 +1,20 @@
 #!/usr/bin/php
 <?php
-$cf_update = false;
-$cf_content = file_get_contents("https://ipv4.icanhazip.com");
+$cf_update = false; //default value
+$cf_content = file_get_contents("https://ipv4.icanhazip.com"); //You can set this to a different service like : https://api.ipify.org
 $cf_content = trim($cf_content);
-$ip_file = __DIR__ . "/current_ip.txt";
+$ip_file = __DIR__ . "/current_ip.txt"; //location of the file to save current ip
 $ip_file_content = file_get_contents($ip_file);
 $ip_file_content = trim($ip_file_content);
 $cf_account_name = "<cloudflare acount username>";
 $cf_api_key = "<cloudflare acount global api-key>";
 
 //Email settings for sending email notification when IP has been updated
+$email_send = true; //Set to false if you do not want email notifications
 $email_to = "recipient@example.com";
 $email_subject = "Your IP has been updated";
 $email_headers = "From: sender@example.com";
 $email_body = "IP has been updated to: " . $cf_content;
-$email_send = true;
-
-if (!$cf_content){
-    print_r("Failed to get ip from remote server. | " . date("Y-m-d h:i:s") . PHP_EOL);
-
-    exit();
-}
-
-if ($cf_content !== $ip_file_content){
-    $cf_update = true;
-    file_put_contents($ip_file, $cf_content);
-}
 
 //Use this command to get the DNS Record ID for your domain:
 //curl -X GET "https://api.cloudflare.com/client/v4/zones/<cloudflare_zone_id>/dns_records?type=A&name=<domain_name>&page=1&per_page=20&order=type&direction=desc&match=all" \
@@ -49,6 +38,22 @@ $cf_dns_array = array(
     "<dns_record_id_4>" => "domain4.com"
 );
 
+//------------------------------------------------------
+
+//If ipv4.icanhazip.com is not accessible.
+if (!$cf_content){
+    print_r("Failed to get ip from remote server. | " . date("Y-m-d h:i:s") . PHP_EOL);
+
+    exit();
+}
+
+//If IP from ipv4.icanhazip.com does not match the IP on file, then update the file and do the update.
+if ($cf_content !== $ip_file_content){
+    $cf_update = true;
+    file_put_contents($ip_file, $cf_content);
+}
+
+//Do the Update
 if ($cf_update == true){
 
     $count=-1;
@@ -113,6 +118,7 @@ if ($cf_update == true){
 
 } else {
 
+    //If IP on file matches IP from ipv4.icanhazip.com then nothing to update
     print_r("No update needed. | ". date("Y-m-d h:i:s") . PHP_EOL);
 
     exit();
